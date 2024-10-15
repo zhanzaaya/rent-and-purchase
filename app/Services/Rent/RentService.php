@@ -2,10 +2,8 @@
 
 namespace App\Services\Rent;
 
-use App\Models\Product;
-use App\Models\Rent;
-use App\Models\RentStatus;
-use App\Models\User;
+use App\Models\DTO\ProductRentDto;
+use App\Models\DTO\ProductRentExtensionDto;
 use App\Repositories\ProductRepository;
 use App\Repositories\RentExtensionRepository;
 use App\Repositories\RentRepository;
@@ -27,20 +25,18 @@ readonly class RentService
     {
     }
 
-    public function makeRent(User $user, int $productId, string $rentTimeFrom, int $rentPeriod)
+    public function makeRent(ProductRentDto $rentDto)
     {
         try {
-            $product = Product::findOrFail($productId);
-
-            $this->rentValidation->validate($user, $product, $rentTimeFrom, $rentPeriod);
+            $this->rentValidation->validate($rentDto);
 
             DB::beginTransaction();
 
-            $this->productRepository->reduceProductRentalStock($product, 1);
+            $this->productRepository->reduceProductRentalStock($rentDto->product, $rentDto->quantity);
 
-            $this->userRepository->subtractFromBalance($user, $product->hourly_rent_price * 1);
+            $this->userRepository->subtractFromBalance($rentDto->user, $rentDto->getTotal());
 
-            $rent = $this->rentRepository->createRent($user, $product, $rentTimeFrom, $rentPeriod, 1);
+            $rent = $this->rentRepository->createRent($rentDto);
 
             DB::commit();
 
@@ -52,19 +48,16 @@ readonly class RentService
         return $rent;
     }
 
-    public function extendRent(User $user, int $rentId, int $rentExtensionPeriod)
+    public function extendRent(ProductRentExtensionDto $rentExtensionDto)
     {
         try {
-            $rent = Rent::findOrFail($rentId);
-
-            $this->rentExtensionValidation->validate($user, $rent, $rentExtensionPeriod);
+            $this->rentExtensionValidation->validate($rentExtensionDto);
 
             DB::beginTransaction();
 
-            $extensionTotal = $rent->product_price * $rentExtensionPeriod * $rent->quantity;
-            $this->userRepository->subtractFromBalance($user, $extensionTotal);
+            $this->userRepository->subtractFromBalance($rentExtensionDto->user, $rentExtensionDto->getTotal());
 
-            $this->rentExtensionRepository->createRentExtension($rent, $rentExtensionPeriod, $extensionTotal);
+            $this->rentExtensionRepository->createRentExtension($rentExtensionDto);
 
             DB::commit();
 

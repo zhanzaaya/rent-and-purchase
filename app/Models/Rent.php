@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -45,5 +47,17 @@ class Rent extends Model
     public function extensions(): HasMany
     {
         return $this->hasMany(RentExtension::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function rentPeriodWithExtensions(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->loadSum('extensions', 'extension_period'),
+        );
     }
 }

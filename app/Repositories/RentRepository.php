@@ -2,24 +2,23 @@
 
 namespace App\Repositories;
 
-use App\Models\Product;
+use App\Models\DTO\ProductRentDto;
 use App\Models\Rent;
 use App\Models\RentStatus;
-use App\Models\User;
 
 class RentRepository
 {
-    public function createRent(User $user, Product $product, string $rentTimeFrom, int $rentPeriod, int $quantity)
+    public function createRent(ProductRentDto $rentDto)
     {
         return Rent::create([
-            'user_id' => $user->id,
-            'product_id' => $product->id,
+            'user_id' => $rentDto->user->id,
+            'product_id' => $rentDto->product->id,
             'status_id' => RentStatus::IN_PROGRESS,
-            'rent_time_from' => $rentTimeFrom,
-            'rent_period' => $rentPeriod,
-            'product_price' => $product->hourly_rent_price,
-            'quantity' => $quantity,
-            'total' => $product->hourly_rent_price * $rentPeriod * $quantity,
+            'rent_time_from' => $rentDto->rentTimeFrom,
+            'rent_period' => $rentDto->rentPeriod,
+            'product_price' => $rentDto->product->hourly_rent_price,
+            'quantity' => $rentDto->quantity,
+            'total' => $rentDto->getTotal(),
         ]);
     }
 }

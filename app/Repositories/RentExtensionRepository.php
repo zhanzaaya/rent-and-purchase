@@ -2,17 +2,17 @@
 
 namespace App\Repositories;
 
-use App\Models\Rent;
+use App\Models\DTO\ProductRentExtensionDto;
 use App\Models\RentExtension;
 
 class RentExtensionRepository
 {
-    public function createRentExtension(Rent $rent, int $rentExtensionPeriod, float $rentExtensionTotal): RentExtension
+    public function createRentExtension(ProductRentExtensionDto $rentExtensionDto): RentExtension
     {
         return RentExtension::create([
-            'rent_id'          => $rent->id,
-            'extension_period' => $rentExtensionPeriod,
-            'total'            => $rentExtensionTotal
+            'rent_id'          => $rentExtensionDto->rent->id,
+            'extension_period' => $rentExtensionDto->extensionPeriod,
+            'total'            => $rentExtensionDto->getTotal(),
         ]);
     }
 }

@@ -10,17 +10,14 @@ Route::post('register', [AuthController::class, 'register'])
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
 
-    Route::get('/', function () {
-        return 'meow';
-    });
+    Route::post('/purchase', [ProductPurchaseController::class, 'purchase']);
 
-    Route::post('/product/{productId}/purchase', [ProductPurchaseController::class, 'purchase'])
-        ->whereNumber('productId');
-    Route::post('/product/{productId}/rent', [ProductRentController::class, 'rent'])
-        ->whereNumber('productId');
+    Route::prefix('rent')
+        ->group(function () {
+            Route::post('/', [ProductRentController::class, 'rent']);
 
-    Route::post('/rent/{rentId}/extend', [ProductRentController::class, 'extendRent'])
-        ->whereNumber('rentId');
+            Route::post('/extend', [ProductRentController::class, 'extendRent']);
+        });
 });
 
 

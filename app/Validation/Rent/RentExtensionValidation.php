@@ -2,25 +2,29 @@
 
 namespace App\Validation\Rent;
 
+use App\Models\DTO\ProductRentExtensionDto;
 use App\Models\Rent;
 use App\Models\RentStatus;
-use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
 class RentExtensionValidation
 {
-    public function validate(User $user, Rent $rent, int $rentExtensionPeriod): void
+    public function validate(ProductRentExtensionDto $rentExtensionDto): void
     {
-        if ($rent->status_id !== RentStatus::IN_PROGRESS) {
+        if ($rentExtensionDto->rent->user_id !== $rentExtensionDto->user->id) {
+            throw ValidationException::withMessages(['Action unauthorized']);
+        }
+
+        if ($rentExtensionDto->rent->status_id !== RentStatus::IN_PROGRESS) {
             throw ValidationException::withMessages(['Rent is not in progress']);
         }
 
-        $rent->loadSum('extensions', 'extension_period');
-        if ($rent->rent_period + $rent->extensions_sum_extension_period > Rent::MAX_RENT_PERIOD) {
+        $rentExtensionDto->rent->loadSum('extensions', 'extension_period');
+        if ($rentExtensionDto->rent->rent_period + $rentExtensionDto->rent->extensions_sum_extension_period + $rentExtensionDto->extensionPeriod > Rent::MAX_RENT_PERIOD) {
             throw ValidationException::withMessages(['Maximum total rent period is 24 hours']);
         }
 
-        if ($rent->product_price * $rentExtensionPeriod > $user->balance) {
+        if ($rentExtensionDto->getTotal() > $rentExtensionDto->user->balance) {
             throw ValidationException::withMessages(['Not enough money for rent extension']);
         }
     }

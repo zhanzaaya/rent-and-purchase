@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Rent\ProductRentRequest;
 use App\Http\Requests\Rent\RentExtensionRequest;
 use App\Http\Resources\Rent\RentResource;
-use App\Models\Rent;
+use App\Models\DTO\ProductRentDto;
+use App\Models\DTO\ProductRentExtensionDto;
 use App\Services\Rent\RentService;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ProductRentController extends \Illuminate\Routing\Controller
 {
@@ -18,22 +17,17 @@ class ProductRentController extends \Illuminate\Routing\Controller
     {
     }
 
-    public function rent(ProductRentRequest $request, int $productId): RentResource|RedirectResponse
+    public function rent(ProductRentRequest $request): RentResource
     {
-        return new RentResource($this->rentService->makeRent(
-            auth()->user(),
-            $productId,
-            $request->input('rent_time_from'),
-            $request->input('rent_period'))
-        );
+        $rentDto = ProductRentDto::fromArray($request->validated());
+
+        return new RentResource($this->rentService->makeRent($rentDto));
     }
 
-    public function extendRent(RentExtensionRequest $request, int $rentId): RentResource|RedirectResponse
+    public function extendRent(RentExtensionRequest $request): RentResource
     {
-        return new RentResource($this->rentService->extendRent(
-            auth()->user(),
-            $rentId,
-            $request->input('extension_period'))
-        );
+        $rentExtensionDto = ProductRentExtensionDto::fromArray($request->validated());
+
+        return new RentResource($this->rentService->extendRent($rentExtensionDto));
     }
 }

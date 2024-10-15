@@ -9,7 +9,8 @@ class RentExtensionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'extension_period' => 'required|int|in:4,8,12'
+            'rentId'          => 'required|int',
+            'extensionPeriod' => 'required|int|in:4,8,12'
         ];
     }
 }
