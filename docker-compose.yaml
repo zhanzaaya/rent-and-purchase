@@ -1,0 +1,30 @@
+version: '3'
+services:
+  web:
+    image: garyclarke/pap-web
+    ports:
+      - "8080:80"  # Maps port 8080 on the host to port 80 in the container
+      - "8443:443" # Maps port 8443 on the host to port 443 in the container (if you're using HTTPS)
+    volumes:
+      - ./public:/var/www/html/public
+  app:
+    image: garyclarke/pap-app
+#    environment:
+#      MARIADB_HOST: db
+    volumes:
+      - .:/var/www/html
+    extra_hosts:
+      - host.docker.internal:host-gateway
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 'secret'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'secret'
+      MYSQL_DATABASE: 'keepcode'
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+volumes:
+  mysqldata: {}
