@@ -22,8 +22,6 @@ return new class extends Migration
             $table->decimal('hourly_rent_price', 12, 2);
             $table->boolean('is_active')->default(true);
             $table->string('preview_path');
-            $table->integer('stock_quantity');
-            $table->integer('rental_stock_quantity');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -38,8 +36,6 @@ return new class extends Migration
                 'hourly_rent_price' => 4.99,
                 'is_active' => true,
                 'preview_path' => '/images/product1.png',
-                'stock_quantity' => 100,
-                'rental_stock_quantity' => 50,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -52,8 +48,6 @@ return new class extends Migration
                 'hourly_rent_price' => 6.00,
                 'is_active' => true,
                 'preview_path' => '/images/product2.png',
-                'stock_quantity' => 200,
-                'rental_stock_quantity' => 25,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -66,8 +60,6 @@ return new class extends Migration
                 'hourly_rent_price' => 4.00,
                 'is_active' => true,
                 'preview_path' => '/images/product3.png',
-                'stock_quantity' => 150,
-                'rental_stock_quantity' => 30,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -80,8 +72,6 @@ return new class extends Migration
                 'hourly_rent_price' => 8.00,
                 'is_active' => true,
                 'preview_path' => '/images/product4.png',
-                'stock_quantity' => 50,
-                'rental_stock_quantity' => 10,
                 'created_at' => now(),
                 'updated_at' => now()
             ]

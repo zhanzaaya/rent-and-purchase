@@ -33,8 +33,6 @@ class SaleService
 
             DB::beginTransaction();
 
-            //update stock
-            $this->productRepository->reduceProductStock($product, 1);
             // update balance
             $this->userRepository->subtractFromBalance($user, $product->price);
             // create sale record

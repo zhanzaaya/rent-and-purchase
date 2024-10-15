@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon $rent_time_from
  * @property int $rent_period
  * @property float $product_price
- * @property int $quantity
  * @property float $total
  */
 class Rent extends Model
@@ -34,7 +33,6 @@ class Rent extends Model
         'rent_time_from',
         'rent_period',
         'product_price',
-        'quantity',
         'total',
     ];
 
@@ -52,12 +50,5 @@ class Rent extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
-    }
-
-    public function rentPeriodWithExtensions(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->loadSum('extensions', 'extension_period'),
-        );
     }
 }

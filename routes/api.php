@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductPurchaseController;
 use App\Http\Controllers\ProductRentController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
             Route::post('/extend', [ProductRentController::class, 'extendRent']);
         });
+
+    Route::get('/product/status', [ProductController::class, 'status']);
 });
 
 

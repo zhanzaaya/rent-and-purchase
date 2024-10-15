@@ -17,7 +17,6 @@ readonly class RentService
     public function __construct(
         private RentValidation          $rentValidation,
         private UserRepository          $userRepository,
-        private ProductRepository       $productRepository,
         private RentRepository          $rentRepository,
         private RentExtensionValidation $rentExtensionValidation,
         private RentExtensionRepository $rentExtensionRepository,
@@ -31,8 +30,6 @@ readonly class RentService
             $this->rentValidation->validate($rentDto);
 
             DB::beginTransaction();
-
-            $this->productRepository->reduceProductRentalStock($rentDto->product, $rentDto->quantity);
 
             $this->userRepository->subtractFromBalance($rentDto->user, $rentDto->getTotal());
 

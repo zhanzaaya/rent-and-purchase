@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sale_items', function (Blueprint $table) {
+        Schema::create('licenses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sale_id')->constrained('sales');
+            $table->foreignId('user_id')->constrained('users');
             $table->foreignId('product_id')->constrained('products');
-            $table->decimal('price', 12, 2);
-            $table->integer('quantity');
-            $table->softDeletes();
+            $table->string('key');
+            $table->dateTime('expires_at');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sale_items');
+        Schema::dropIfExists('licenses');
     }
 };

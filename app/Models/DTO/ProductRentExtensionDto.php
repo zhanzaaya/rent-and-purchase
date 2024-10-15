@@ -26,6 +26,6 @@ class ProductRentExtensionDto
 
     public function getTotal(): float
     {
-        return $this->rent->product_price * $this->rent->quantity * $this->extensionPeriod;
+        return $this->rent->product_price * $this->extensionPeriod;
     }
 }

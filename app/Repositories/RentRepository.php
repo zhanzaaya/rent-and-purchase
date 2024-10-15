@@ -17,8 +17,14 @@ class RentRepository
             'rent_time_from' => $rentDto->rentTimeFrom,
             'rent_period' => $rentDto->rentPeriod,
             'product_price' => $rentDto->product->hourly_rent_price,
-            'quantity' => $rentDto->quantity,
             'total' => $rentDto->getTotal(),
         ]);
+    }
+
+    public function find(int $userId, int $productId)
+    {
+        return Rent::where('user_id', $userId)
+            ->where('product_id', $productId)
+            ->first();
     }
 }

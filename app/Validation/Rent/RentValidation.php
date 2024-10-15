@@ -11,11 +11,6 @@ class RentValidation
 {
     public function validate(ProductRentDto $rentDto): void
     {
-        // product in stock?
-        if ($rentDto->product->rental_stock_quantity < 1) {
-            throw ValidationException::withMessages(['Product out of stock for rent']);
-        }
-
         // revalidate rentTimeFrom
         if (Carbon::make($rentDto->rentTimeFrom)->isPast()) {
             throw ValidationException::withMessages(['Invalid date and time of rent']);

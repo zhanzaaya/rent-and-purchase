@@ -13,4 +13,11 @@ class SaleRepository
             'total'   => $total,
         ]);
     }
+
+    public function find(int $userId, int $productId)
+    {
+        return Sale::where('user_id', $userId)
+            ->where('product_id', $productId)
+            ->first();
+    }
 }

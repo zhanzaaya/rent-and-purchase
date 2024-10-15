@@ -19,7 +19,6 @@ return new class extends Migration
             $table->timestamp('rent_time_from');
             $table->integer('rent_period');
             $table->decimal('product_price', 12, 2);
-            $table->integer('quantity');
             $table->decimal('total', 12, 2);
             $table->softDeletes();
             $table->timestamps();

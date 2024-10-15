@@ -13,9 +13,5 @@ class SaleValidation
         if ($product->price > $user->balance) {
             throw ValidationException::withMessages(['Not enough money for purchase']);
         }
-
-        if ($product->stock_quantity < 1) {
-            throw ValidationException::withMessages(['Product out of stock for purchase']);
-        }
     }
 }

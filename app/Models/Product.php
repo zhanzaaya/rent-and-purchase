@@ -17,8 +17,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property float $hourly_rent_price
  * @property bool $is_active
  * @property string $preview_path
- * @property int $stock_quantity
- * @property int $rental_stock_quantity
  */
 class Product extends Model
 {
@@ -33,7 +31,5 @@ class Product extends Model
         'hourly_rent_price',
         'is_active',
         'preview_path',
-        'stock_quantity',
-        'rental_stock_quantity',
     ];
 }
