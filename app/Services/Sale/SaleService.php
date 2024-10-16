@@ -6,7 +6,6 @@ use App\Models\Product;
 use App\Models\Sale;
 use App\Models\User;
 use App\Repositories\ProductRepository;
-use App\Repositories\SaleItemRepository;
 use App\Repositories\SaleRepository;
 use App\Repositories\UserRepository;
 use App\Validation\Sale\SaleValidation;
@@ -18,8 +17,6 @@ class SaleService
         private readonly SaleValidation     $saleValidation,
         private readonly UserRepository     $userRepository,
         private readonly SaleRepository     $saleRepository,
-        private readonly SaleItemRepository $saleItemRepository,
-        private readonly ProductRepository  $productRepository,
     )
     {
     }
@@ -36,9 +33,7 @@ class SaleService
             // update balance
             $this->userRepository->subtractFromBalance($user, $product->price);
             // create sale record
-            $sale = $this->saleRepository->createSale(auth()->id(), $product->price);
-            // create sale item record
-            $this->saleItemRepository->createSaleItem($sale->id, $product->id, $product->price, 1);
+            $sale = $this->saleRepository->createSale($user->id, $product);
 
             DB::commit();
 

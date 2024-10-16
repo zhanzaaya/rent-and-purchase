@@ -17,7 +17,7 @@ readonly class ProductController
     public function status(Request $request): LicenseResource
     {
         return new LicenseResource(
-            $this->licenseService->getOrCreateLicense(auth()->user(), $request->input('product_id'))
+            $this->licenseService->getOrCreateLicense(auth()->user(), $request->input('productId'))
         );
     }
 }

@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('product_id')->constrained('products');
             $table->string('key');
-            $table->dateTime('expires_at');
+            $table->dateTime('expires_at')->nullable();
+            $table->morphs('licensable');
             $table->timestamps();
         });
     }

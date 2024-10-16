@@ -63,7 +63,6 @@ readonly class RentService
             throw $exception;
         }
 
-        $rent->refresh();
-        return $rent;
+        return $rentExtensionDto->rent->refresh();
     }
 }

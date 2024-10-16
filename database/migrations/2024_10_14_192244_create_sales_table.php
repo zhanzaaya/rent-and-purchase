@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained('products');
             $table->decimal('price', 12, 2);
             $table->decimal('total', 12, 2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

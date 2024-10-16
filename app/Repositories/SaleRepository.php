@@ -2,15 +2,18 @@
 
 namespace App\Repositories;
 
+use App\Models\Product;
 use App\Models\Sale;
 
 class SaleRepository
 {
-    public function createSale(int $userId, float $total)
+    public function createSale(int $userId, Product $product)
     {
         return Sale::create([
             'user_id' => $userId,
-            'total'   => $total,
+            'product_id' => $product->id,
+            'price' => $product->price,
+            'total'   => $product->price,
         ]);
     }
 

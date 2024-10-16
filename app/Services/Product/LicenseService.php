@@ -24,12 +24,12 @@ readonly class LicenseService
 
         $sale = $this->saleRepository->find($user->id, $productId);
         if ($sale) {
-            return $this->licenseRepository->create($user->id, $productId);
+            return $this->licenseRepository->createFromSale($user->id, $productId, $sale);
         }
 
         $rent = $this->rentRepository->find($user->id, $productId);
         if ($rent) {
-            return $this->licenseRepository->create($user->id, $productId, $rent->expires_at);
+            return $this->licenseRepository->createFromRent($user->id, $productId, $rent);
         }
 
         return null;
